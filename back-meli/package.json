@@ -1,0 +1,25 @@
+{
+  "name": "melichallenge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sebdemaria/MeLiChallenge.git"
+  },
+  "author": "Sebastián Demaría",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sebdemaria/MeLiChallenge/issues"
+  },
+  "homepage": "https://github.com/sebdemaria/MeLiChallenge#readme",
+  "dependencies": {
+    "axios": "^0.21.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.6"
+  }
+}
