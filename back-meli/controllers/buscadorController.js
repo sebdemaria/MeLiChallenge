@@ -1,26 +1,15 @@
 let express = require('express');
 const axios = require('axios');
+const numberOfLimitResults = 4;
 
-let getMeliApi =  async (req, res) => {
-    await axios.get('https://api.mercadolibre.com/sites/MLA/')
-    .then( res => {
-        console.log(res.data)
-    }).catch((error => {
-        console.log(error);
-    }));
+const getMeliApi =  async (req, res) => {
+    try {
+        const resp = await axios.get(`https://api.mercadolibre.com/sites/MLA/search?q=Motorola%20G6&limit=${numberOfLimitResults}`)
+            return resp.data
+    } catch (err) {
+        console.error(err)
+    }
 }
 
-
-// let listController = {
-//     index: (req, res) => {
-//         res.send('Hola manola');
-//     },  
-
-//     identificacion: (req, res) => {
-//         let idProd = req.params.id;
-//         res.send('Hola cami ' + idProd);
-//     },  
-// };
-
-//Exporto la ruta para poder compartirlo con index.js
+//Exporto la ruta
 module.exports = getMeliApi;
