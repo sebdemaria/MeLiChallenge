@@ -102,10 +102,8 @@ const endpointId = async () => {
         item: productSpecs
     }    
 
-    return listadoPorId
+    return listadoPorId;
     // console.log(listadoPorId)
 }
-
-
 
 module.exports = { endpointBusqueda, endpointId };

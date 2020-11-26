@@ -4,7 +4,7 @@ const app = express();
 const router = require('./routes/router');
 
 app.use(express.static(__dirname + '/public/'));
-app.use("/", router);
+app.use("/api/", router);
 
 //Creo el servidor
 app.listen('9000', function(err) {
