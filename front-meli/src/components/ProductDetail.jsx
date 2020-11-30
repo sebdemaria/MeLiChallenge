@@ -42,8 +42,6 @@ const ProductDetail = (props) => {
         }              
     }
 
-
-
     if(resultado === undefined){
         return ( 
             <div className="loadContainer">
@@ -76,7 +74,7 @@ const ProductDetail = (props) => {
                             {new Intl.NumberFormat('es-AR', { style: 'currency', currency: resultado.item.price.currency }).format(resultado.item.price.amount)}
                         </p>
 
-                        <button type="button" class="btn btn-primary buy">Comprar</button>
+                        <button type="button" className="btn btn-primary buy">Comprar</button>
                     </div>
 
                 </div>
