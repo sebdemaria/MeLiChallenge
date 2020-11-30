@@ -2,12 +2,14 @@ let express = require('express');
 const axios = require('axios');
 const numberOfLimitResults = 4;
 
-const getMeliApi =  async (req, res) => {
+const getMeliApi =  async (query) => {
     try {
-        const resp = await axios.get(`https://api.mercadolibre.com/sites/MLA/search?q=Motorola%20G6&limit=${numberOfLimitResults}`)
-            return resp.data
+        const resp = await axios.get(`https://api.mercadolibre.com/sites/MLA/search?q=${query}&limit=${numberOfLimitResults}`)
+        return resp;
     } catch (err) {
-        console.error(err)
+        console.log(err)
+        if(err.response.status === 404)
+        return err.response
     }
 }
 

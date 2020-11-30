@@ -2,7 +2,8 @@ let express = require('express');
 
 const package = require('../package.json');
 const getMeliApi = require('../controllers/buscadorController');
-const { getMeliApiId, getMeliApiIdDescription } = require('../controllers/idSearchController');
+const { getMeliApiId, getMeliApiIdDescription, getProductCategory } = require('../controllers/idSearchController');
+const { default: Axios } = require('axios');
 
 
 //Create author name variables
@@ -20,90 +21,145 @@ const splitPrice = (price, currency) => {
     }
 }
 
-const endpointBusqueda = async () => {
+const endpointBusqueda = async (query) => {    
     //response
-    const infoSearch = await getMeliApi();
+    const searchResponse = await getMeliApi(query);
     
-    //empty array for categories
-    const categoriesRootArray = [];
-    
-    //get filter id
-    const categoryFilter = infoSearch.filters.find(filter => filter.id === 'category');
+    //check req status of item
+    //not found send status for error print
+    if (searchResponse.data.paging.total == 0)
+    {
+        const statusReq = {
+            "response" : {
+                "status" : "No hay resultados"
+            }
+        }    
 
-    //get root categories group and push to empty array
-    const categoriesGet = categoryFilter.values[0].path_from_root.map(value => categoriesRootArray.push(value.name));
+        return statusReq;
 
-    //empty array for items
-    const itemsArray = [];
+    //if 404 send status
+    }if (searchResponse.status == 404)
+    {
+        const statusReq = {
+            "response" : {
+                "status" : searchId.status,
+                "statusText" : searchId.statusText
+            }
+        }    
 
-    const resultado = infoSearch.results.map(value => value);
+        return statusReq;
 
-    const itemSection = (resultado) => {
-        for (i = 0; i < resultado.length; i++){
+    //found, sent to front
+    }if(searchResponse.status == 200)
+    {
+        const infoSearch = searchResponse.data
 
-            const price = resultado[i].price;
+        //empty array for categories
+        const categoriesRootArray = [];
+        
+        //get filter id
+        const categoryFilter = infoSearch.filters.find(filter => filter.id === 'category');
 
-            const currency = resultado[i].currency_id;                    
+        //get root categories group and push to empty array
+        const categoriesGet = categoryFilter.values[0].path_from_root.map(value => categoriesRootArray.push(value.name));
 
-            const productSpecs = {
-                "id" : resultado[i].id,
-                "title" : resultado[i].title,
-                "price" : 
-                    splitPrice(price, currency),
-                "picture" : resultado[i].thumbnail,
-                "condition" : resultado[i].condition,
-                "free_shipping" : resultado[i].shipping.free_shipping
-            }   
-            itemsArray.push(productSpecs);                          
+        //empty array for items
+        const itemsArray = [];
+
+        const resultado = infoSearch.results;
+
+        const itemSection = (resultado) => { 
+            resultado.map(value => {
+
+                const price = value.price;
+
+                const currency = value.currency_id;                    
+
+                const productSpecs = {
+                    "id" : value.id,
+                    "title" : value.title,
+                    "price" : 
+                        splitPrice(price, currency),
+                    "picture" : value.thumbnail,
+                    "condition" : value.condition,
+                    "free_shipping" : value.shipping.free_shipping
+                }   
+                itemsArray.push(productSpecs);                          
+            })
         }
+
+        itemSection(resultado);
+
+        const listadoPorSearch = {
+            "author" : {
+                "name" : firstName,
+                "lastname" : lastName
+            },
+            categories: categoriesRootArray,
+            items: itemsArray
+        }    
+        return listadoPorSearch;
     }
-
-    itemSection(resultado);
-
-    const listadoPorSearch = {
-        "author" : {
-            "name" : firstName,
-            "lastname" : lastName
-        },
-        categories: categoriesRootArray,
-        items: itemsArray
-    }    
-    return listadoPorSearch;
 }
 
-const endpointId = async () => {
+const endpointId = async (id) => {
     //response
-    const resultadoId = await getMeliApiId();
-    const resultadoDescription = await getMeliApiIdDescription();
+    const searchId = await getMeliApiId(id);
+    const searchDescription = await getMeliApiIdDescription(id);
 
-    const description = resultadoDescription.plain_text;
+    //check req status of item
+    //not found send status for error print
+    if (searchId.status == 404)
+    {
+        const statusReq = {
+            "response" : {
+                "status" : searchId.status,
+                "statusText" : searchId.statusText
+            }
+        }    
 
-    const price = resultadoId.price;
+        return statusReq;
 
-    const currency = resultadoId.currency_id;                    
+    //found, sent to front
+    }if(searchId.status || searchDescription.status == 200)
+    {
+        const resultadoId = searchId.data
 
-    const productSpecs = {
-        "id" : resultadoId.id,
-        "title" : resultadoId.title,
-        "price" : 
-            splitPrice(price, currency),
-        "picture" : resultadoId.thumbnail,
-        "condition" : resultadoId.condition,
-        "free_shipping" : resultadoId.shipping.free_shipping,
-        "sold_quantity" : resultadoId.sold_quantity,
-        "description" : description
-    }   
+        const categoryId = resultadoId.category_id;       
 
-    const listadoPorId = {
-        "author" : {
-            "name" : firstName,
-            "lastname" : lastName
-        },
-        item: productSpecs
-    }    
+        const categoryName = await getProductCategory(categoryId);   
+        
+        const resultadoDescription = searchDescription.data;
 
-    return listadoPorId;
-    // console.log(listadoPorId)
+        const description = resultadoDescription.plain_text;
+
+        const price = resultadoId.price;
+
+        const currency = resultadoId.currency_id;                    
+
+        const productSpecs = {
+            "id" : resultadoId.id,
+            "title" : resultadoId.title,
+            "price" : 
+                splitPrice(price, currency),
+            "picture" : resultadoId.thumbnail,
+            "condition" : resultadoId.condition,
+            "free_shipping" : resultadoId.shipping.free_shipping,
+            "sold_quantity" : resultadoId.sold_quantity,
+            "description" : description,
+            "category" : categoryName.data.name
+        }
+        
+        const listadoPorId = {
+            "author" : {
+                "name" : firstName,
+                "lastname" : lastName
+            },
+            item: productSpecs
+        }    
+        
+        return listadoPorId;
+    }
 }
 
 module.exports = { endpointBusqueda, endpointId };
