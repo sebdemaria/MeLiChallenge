@@ -1,9 +1,7 @@
-$color-fondo: #FFE600 !default;
-$button-color: #EEEEEE !default;
-$lupa-color: #333333 !default;
+@import 'variables';
 
 .header{
-    background-color: $color-fondo; 
+    background-color: $color-header; 
     width: 100%;
     display: inline-flex;
     justify-content: center;
@@ -30,6 +28,7 @@ form{
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
     box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
+    transition: 0.3s;
 }
 
 .search:hover{

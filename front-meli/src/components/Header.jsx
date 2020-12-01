@@ -1,36 +1,28 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import '../css/header.css';
-import SearchResult from '../components/SearchResult';
+import { useHistory } from "react-router";
 import {
     Link
   } from "react-router-dom";
+  
 
-const Header = () => {
+export const Header = () => {
+
+    //function to send prop with input value for product listing
+    const history = useHistory();
+    const valueSend = (data) => {
+        history.push({
+            pathname:  "/items",
+            search: 'q=' + data
+        })
+    }
     
     const imgTag = process.env.PUBLIC_URL;
 
-    //save search results
-    const [resultado, setResultado] = useState([]);
-
-    //Send request to enpoint
-    const getResults = async (input) => {
-        try {
-            const searchData = await axios.get(`http://localhost:9000/api/items?q=${input}`)
-            searchData ? setResultado(searchData.data) : setResultado(null);                 
-        } catch (err) {
-            console.error(err)
-        } 
+    const getInputDataForSearch = (event) =>{
+        const inputValue = event[0].value;
+        valueSend(inputValue);
     }
-
-
-    //get data from input for search
-    const getQueryFromInput = (event) => {
-        const input = event[0].value;
-        getResults(input);
-    }
-//SOLUCIONAR ENVIO DE PROPS A VISTA SEARCH RESULT, LO INTENTE PERO NO LLEGA LA DATA, VER A FONDO
-    // console.log(resultado);
 
     return (
         <div className="header">
@@ -40,7 +32,7 @@ const Header = () => {
             </Link>
 
             <form onSubmit={(ev) => { 
-                getQueryFromInput(document.getElementsByClassName('search'));
+                getInputDataForSearch(document.getElementsByClassName('search'));
                 ev.preventDefault();
                 }
             }>
@@ -49,9 +41,7 @@ const Header = () => {
                 <button type="submit" className="find">
                     <img src={imgTag + "/img/ic_Search.png"} alt=""/>
                 </button>
-
-            </form>
-            
+            </form>            
         </div>
     )
 }

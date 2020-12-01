@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import {
+    Link
+  } from "react-router-dom";
 import '../css/productDetail.css';
+import Modal from 'react-modal';
+import logo from '../success.gif';
 
+Modal.setAppElement('#root');
 const ProductDetail = (props) => {
     
     const imgTag = process.env.PUBLIC_URL;
 
+    const [modaIsOpen, setModalIsOpen] = useState(false);
+
     //get id from url for search on api
     const id = props.match.params.id;
-
     
     //Send request to enpoint
     const getResults = async (id) => {
@@ -50,7 +57,6 @@ const ProductDetail = (props) => {
         )
     }return (
         <div className="container">
-            {/*HACER REQUEST PARA TRAER CATEGORIA PROPIA DEL PRODUCTO */}
             <p className="col-12 category">
                 {resultado.item.category}
             </p>
@@ -70,11 +76,13 @@ const ProductDetail = (props) => {
                             </strong> 
                         </p>
 
+                        {/** price parce to currency */}
                         <p className="price">
                             {new Intl.NumberFormat('es-AR', { style: 'currency', currency: resultado.item.price.currency }).format(resultado.item.price.amount)}
                         </p>
 
-                        <button type="button" className="btn btn-primary buy">Comprar</button>
+                        <button onClick={() => setModalIsOpen(true)} type="button" className="btn btn-primary buy">Comprar</button>                        
+                        
                     </div>
 
                 </div>
@@ -88,6 +96,45 @@ const ProductDetail = (props) => {
                     </p>
                 </div>
             </section>
+
+            <div className="modal">
+                <Modal isOpen={modaIsOpen} onRequestClose={() => setModalIsOpen(false)}
+                    // styles of button needed in tag otherwise all the fabric styles get lost
+                    style={
+                        {
+                            overlay:{
+                                transition: '0.5s'
+                            },
+                            content:{     
+                                textAlign: "center",
+                                top: '25%',
+                                left: '30%',
+                                right: '25%',
+                                bottom: '30%',                       
+                                width: '40%',
+                                height: '50%',
+                                borderRadius: '5px',   
+                                transition: '0.5s',
+                                boxShadow: '0 1px 2px 0 rgba(0,0,0,.1)'                    
+                            }                            
+                        }
+                    }   
+                >
+                        <img src={logo} alt="All done!" class="success"/>
+                        <div class="modal-msg">                            
+                            <h4>
+                                Listo! Ya realizaste tu compra!
+                            </h4>
+                            <p>
+                                Muchas gracias por confiar en nosotros
+                            </p>
+                        </div>
+                        <Link to="/">
+                            <button onClick={() => setModalIsOpen(false)} type="button" className="btn btn-primary back">Quiero seguir comprando!</button>                                         
+                        </Link>
+                </Modal>
+            </div>
+
         </div>
     )
 }

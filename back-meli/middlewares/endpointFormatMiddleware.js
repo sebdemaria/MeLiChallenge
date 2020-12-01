@@ -25,13 +25,15 @@ const endpointBusqueda = async (query) => {
     //response
     const searchResponse = await getMeliApi(query);
     
+
     //check req status of item
     //not found send status for error print
-    if (searchResponse.data.paging.total == 0)
+    if (searchResponse.status == 200 && searchResponse.data.paging.total == 0)
     {
         const statusReq = {
             "response" : {
-                "status" : "No hay resultados"
+                "status" : 404,
+                "statusText" : "Not Found"
             }
         }    
 
@@ -52,7 +54,7 @@ const endpointBusqueda = async (query) => {
     //found, sent to front
     }if(searchResponse.status == 200)
     {
-        const infoSearch = searchResponse.data
+        const infoSearch = searchResponse.data;
 
         //empty array for categories
         const categoriesRootArray = [];
@@ -61,7 +63,11 @@ const endpointBusqueda = async (query) => {
         const categoryFilter = infoSearch.filters.find(filter => filter.id === 'category');
 
         //get root categories group and push to empty array
-        const categoriesGet = categoryFilter.values[0].path_from_root.map(value => categoriesRootArray.push(value.name));
+        const categoriesGet = (categoryFilter) =>{
+            categoryFilter ? categoryFilter.values[0].path_from_root.map(value => categoriesRootArray.push(value.name)) : undefined;
+        }
+
+        categoriesGet(categoryFilter);
 
         //empty array for items
         const itemsArray = [];
@@ -82,7 +88,8 @@ const endpointBusqueda = async (query) => {
                         splitPrice(price, currency),
                     "picture" : value.thumbnail,
                     "condition" : value.condition,
-                    "free_shipping" : value.shipping.free_shipping
+                    "free_shipping" : value.shipping.free_shipping,
+                    "city": value.address.state_name
                 }   
                 itemsArray.push(productSpecs);                          
             })
