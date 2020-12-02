@@ -5,9 +5,9 @@ const router = require('./routes/router');
 const cors = require('cors');
 
 
+app.use(cors());
 app.use(express.static(__dirname + '/public/'));
 app.use("/api/", router);
-app.use(cors());
 
 //Creo el servidor
 app.listen('9000', function(err) {
