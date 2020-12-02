@@ -7,7 +7,6 @@ import {
 import Header from './components/Header';
 import SearchResult from './components/SearchResult';
 import ProductDetail from './components/ProductDetail';
-import Success from './components/Success';
 
 const App = () => {
   return (
@@ -19,7 +18,6 @@ const App = () => {
         <Switch>
           <Route exact path="/items" component={SearchResult}/>              
           <Route exact path="/items/:id" component={ProductDetail}/>              
-          <Route exact path="/sucess" component={Success}/>              
         </Switch>
       </Router>
     </main>

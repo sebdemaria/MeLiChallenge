@@ -1,99 +1,145 @@
 @import 'variables';
 
 body{
-    background-color: $color-fondo;
+    background-color: $color-fondo-gray;
 }
 
 .results{
-    box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
+    box-shadow: $box-shadow;
     margin-bottom: 32px;
-    background-color: white;
+    background-color: $background-color-white;
 }
 
 .breadcrumb{
+    color: $font-color;
     font-size: 14px;
-    padding: 0;
-    margin: $margin-top 0 $margin-top 0;
-    background-color: $color-fondo!important;
+    margin: $value-16px 0 $value-16px 0;
+    background-color: $color-fondo-gray!important;
 }
 
+.loadContainer{
+    height: 550px!important;
+
+    .loading{
+        width: auto;
+    }
+
+}
+    
 .producto{
-    width: 100%;
     margin: 0;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid #D9D9D9;
     color: black;
-
-    .list{
-        display: inline-flex;
+        
+    .thumbnailContainer{
         padding: 0;
+    
         
-        .thumbnailContainer{
-            display: inline-flex;        
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-        
-            
-            .loading{
-                width: 15%;
-                height: 19%;
-                margin: 23%;
+    
+        .thumbnail{
+            width: 180px;
+            margin: $value-16px;
+        }
+    }
+
+    .detalles{
+        height: fit-content;
+        margin-top: 45px;  
+
+        .precio-y-shipping{
+            display: inline-flex;
+            align-items: $justify-align-center;
+
+            .shipping{
+                margin-left: 8px;
             }
-            
-            
-            .loading-img{
-                width: 15%;
-                height: 19%;
-                margin: 23%;
-            }
-        
-            .thumbnail{
-                width: 180px;
-                height: 180px;
-                margin: $margin-top;
+
+            .precio{
+                font-size: 24px;
+                margin-bottom: 0;
             }
         }
 
-        .detalles{
-            padding: 6% 0 0 0;  
+        .articulo{
+            font-size: $title-search-size;
+            height: max-content;
+            padding-top: $value-32px;
+            margin-bottom: 0;
 
-            .precio-y-shipping{
-                display: inline-flex;
-                align-items: center;
-
-                .shipping{
-                    margin-left: 8px;
-                }
-
-                .price{
-                    font-size: 24px;
-                    margin-bottom: 0;
-                }
-            }
-
-            .title{
-                height: max-content;
-                margin: 0;
-                padding-top: $padding-top;
-
-                strong{
-                    font-weight: normal;
-                }
+            strong{
+                font-weight: normal;
             }
         }
-        
-        .city{
-            font-size: 12px;
-            margin: 20px 0 0 0;
-        }
-    }  
+    }
+    
+    .city{
+        text-align: center;
+        font-size: 12px;
+        margin: 50px 0 0 0;
+        padding: 0;
+    }
 }
 
-.producto:last-child{
-    border-bottom: none;
+@media (max-width: 768px){
+
+    .container{
+        margin: 0;
+        max-width: 768px;
+    }
+
+    .loadContainer{
+        height: 450px!important;
+    
+    }
+
+    .thumbnail{
+        width: 140px!important;
+    }
+
+    .detalles{
+        margin-top: 33px!important;
+
+        .precio{
+            font-size: 20px!important;
+        }
+
+        .articulo{
+            font-size: 16px!important;
+            padding-top: 25px!important;
+        }
+    }
 }
 
+@media (max-width: 576px){
+    .breadcrumb{
+        font-size: 11px;
+        padding: 0 0 0 10px;
+    }
 
+    .thumbnail{
+        width: 100px!important;
+    }
 
+    .producto{
+        padding-right: 15px;
+    }
 
+    .detalles{
+        margin-top: 20px!important;
+        padding: 0;
 
+        .precio{
+            font-size: 15px!important;
+        }
+
+        .articulo{
+            font-size: 10px!important;
+            padding-top: 20px!important;
+
+        }
+    }
+
+    .city{
+        font-size: 9px!important;
+    }
+}

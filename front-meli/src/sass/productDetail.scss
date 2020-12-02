@@ -1,12 +1,17 @@
 @import 'variables';
 
+
+.container{
+    padding: 0;
+}
+
 .loadContainer{
     width: 100%;
     height: 100%;
-    background-color: $color-fondo;
+    background-color: $color-fondo-gray;
     display: inline-flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: $justify-align-center;
+    align-items: $justify-align-center;
 }
 
 .loading{
@@ -16,29 +21,35 @@
 }
 
 .product{
-    width: 100%;    
-    background-color: white;
+    background-color: $background-color-white;
     border-radius: 5px;
-    margin-top: $margin-top;
-    margin-bottom: 32px;
+    margin: $value-16px 0 32px 0!important;
 }
 
 .category{
-    margin-top: $margin-top;
-    margin-bottom: 0!important;
+    color: $font-color;
+    padding: 0;
+    margin: $value-16px 0 0 0!important;
     font-size: 13px;
 }
 
 .productDetails{
-    width: auto;
-    padding: $padding-top 0 $padding-top 0;
+    width: 100%;
     display: inline-flex;
+    padding: 0;
 
-    img{
-        width: 680px;
+    .foto{
+        width: 50%;
+
+        .item{
+            width: 680px;
+            max-width: 100%;
+        }        
     }
 
     .details{
+        height: fit-content;
+        padding: $value-32px 32px 0 0;
 
         p{
             margin-bottom: 0;
@@ -49,24 +60,26 @@
         }
 
         .title{
-            font-size: 24px;;
-            margin-top: $margin-top;
+            font-size: 24px;
+            margin-top: $value-16px;
         }
 
         .price{
             font-size: 46px;
-            padding-top: $padding-top;
+            padding: $value-32px 0 $value-32px 0;
         }
     }
 
 }
 
 .description{
-    
-    padding: $padding-top 0 $padding-top $padding-top;
+    width: 100%;
+    padding: $value-32px $value-32px $value-32px $value-32px;
+    margin-left: 0;
 
     .description-title{
-        margin-bottom: $padding-top;
+        margin-bottom: $value-32px;
+        font-size: 28px;
     }
 
     .description-text{
@@ -76,32 +89,111 @@
 }
 
 .buy{
-    width: 96%;
-    margin-top: $padding-top;
-    margin-right: 32px;
-    background-color: $color-buy!important;
+    font-size: 20px;
+    
+    width: 100%;
+    background-color: $color-buy-blue!important;
     transition: 0.5s;
 }
 
 .buy:hover{
-    background: white!important;
-    border: 5px, solid, $color-buy;
-    color: $color-buy;
+    background: $background-color-white!important;
+    border: 5px, solid, $color-buy-blue;
+    color: $color-buy-blue;
 }
 
 .success{
-    width: 60%;
-    position: relative;
-    top: -50px;
+    width: 40%;
 }
 
 .modal-msg{
     position: relative;
-    top: -90px;
+    bottom: 37%;
+    color: black;
+}
+
+.ReactModal__Content{
+    text-align: center;
+    top: 21%!important;
+    left: 30%!important;
+    width: 40%;
+    height: max-content;
+    padding-bottom: 40px!important;
+    border-radius: 5px; 
+    transition: 0.5s;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.1)  
 }
 
 .back{
     position: relative;
-    top: -90px;
-    justify-self: center;
+    bottom: 37%;
+}
+
+@media (max-width: 1024px){
+
+    .title{
+        font-size: 24px!important;
+    }
+
+    .price{
+        font-size: 35px!important;
+    }
+    
+    .description-title{
+        font-size: 24px;
+    }
+
+    .description-text{
+        font-size: 18px!important;
+    }
+    
+    .ReactModal__Content{
+        width: 70%;
+        left: 15.6%!important;
+        padding-bottom: 65px !important;
+    }
+}
+
+@media (max-width: 767px){
+    .category{
+        padding-left: 10px;
+    }
+
+    .product{
+        border-radius: 0;
+    }
+
+    .productDetails{
+        display: inline;
+
+        .foto{
+            width: 100%;
+        }
+
+        .details{
+            padding: 25px 25px 0 25px!important;
+
+            .price{
+                font-size: 27px!important;
+            }
+        }
+
+        .buy{
+            font-size: 18px;
+        }    
+    }        
+
+    .description-title{
+        font-size: 22px;
+        text-align: center;
+    }
+
+    .description-text{
+        font-size: 14px!important;
+        text-align: center;
+    }
+
+    .ReactModal__Content{
+        padding-bottom: 40px !important;
+    }
 }

@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
     Link
   } from "react-router-dom";
-import '../css/productDetail.css';
+import '../sass/productDetail.scss';
 import Modal from 'react-modal';
 import logo from '../success.gif';
 
@@ -34,8 +34,6 @@ const ProductDetail = (props) => {
     useEffect(() => {
         getResults(id);
       }, [id]);
-
-      console.log(resultado)
     
     //function for parsing sold items text
     const soldItemsSwitch = (soldItems) => {
@@ -56,16 +54,21 @@ const ProductDetail = (props) => {
             </div>     
         )
     }return (
-        <div className="container">
-            <p className="col-12 category">
-                {resultado.item.category}
-            </p>
-            <section className='row product' >
+        <section className="container">
+                <div className="row col-12">
+                    <p className="col-12 category">
+                        {resultado.item.category}
+                    </p>
+                </div>
 
-                <div className="col-12 productDetails">
-                    <img className="col-7 thumbnail" src={resultado.item.picture} alt={resultado.item.title}/>
+            <div className='row product'>
 
-                    <div className="col-5 details">
+                <div className="productDetails">
+                    <div class="col-12 col-sm-12 col-md-7 col-lg-7 foto">                        
+                        <img className="item" src={resultado.item.picture} alt={resultado.item.title}/>
+                    </div>
+
+                    <div className="col-12 col-sm-12 col-md-5 col-lg-5 details">
                         <p className="condition">
                             {(resultado.item.condition === 'new' ? "Nuevo" : "Usado") + soldItemsSwitch(resultado.item.sold_quantity)}
                         </p>
@@ -87,55 +90,37 @@ const ProductDetail = (props) => {
 
                 </div>
 
-                <div className="col-12 description">
-                    <h2 className="description-title">
+                <div className="row description">
+                    <h2 className="col-12 description-title">
                         Descripción del producto
                     </h2>
-                    <p className="col-7 description-text">
+                    <p className="col-12 col-md-7 col-lg-7 description-text">
                         {resultado.item.description}
                     </p>
                 </div>
-            </section>
+            </div>
 
             <div className="modal">
-                <Modal isOpen={modaIsOpen} onRequestClose={() => setModalIsOpen(false)}
-                    // styles of button needed in tag otherwise all the fabric styles get lost
-                    style={
-                        {
-                            overlay:{
-                                transition: '0.5s'
-                            },
-                            content:{     
-                                textAlign: "center",
-                                top: '25%',
-                                left: '30%',
-                                right: '25%',
-                                bottom: '30%',                       
-                                width: '40%',
-                                height: '50%',
-                                borderRadius: '5px',   
-                                transition: '0.5s',
-                                boxShadow: '0 1px 2px 0 rgba(0,0,0,.1)'                    
-                            }                            
-                        }
-                    }   
+                <Modal 
+                    isOpen={modaIsOpen} 
+                    onRequestClose={() => setModalIsOpen(false)}                                     
                 >
-                        <img src={logo} alt="All done!" class="success"/>
-                        <div class="modal-msg">                            
-                            <h4>
-                                Listo! Ya realizaste tu compra!
-                            </h4>
-                            <p>
-                                Muchas gracias por confiar en nosotros
-                            </p>
-                        </div>
-                        <Link to="/">
+                    <img src={logo} alt="All done!" class="success"/>
+                    <div class="modal-msg">                            
+                        <h4>
+                            Listo! Ya realizaste tu compra!
+                        </h4>   
+                        <p>
+                            Muchas gracias por confiar en nosotros
+                        </p>
+                    </div>
+                    <Link style={{ textDecoration: 'none' }} to="/">
                             <button onClick={() => setModalIsOpen(false)} type="button" className="btn btn-primary back">Quiero seguir comprando!</button>                                         
-                        </Link>
+                    </Link>
                 </Modal>
             </div>
 
-        </div>
+        </section>
     )
 }
 
